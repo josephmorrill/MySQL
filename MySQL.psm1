@@ -129,6 +129,9 @@ function Connect-MySqlServer
 		[Parameter()]
 		[ValidateNotNullOrEmpty()]
 		[int]$ConnectionTimeOut = 15
+		
+		[Parameter()]
+		[bool]$UseSSL = $TRUE
 	)
 	begin
 	{
@@ -143,6 +146,14 @@ function Connect-MySqlServer
 		}
 		# Added
 		$connectionString = $connectionString + "default command timeout=$CommandTimeOut; Connection Timeout=$ConnectionTimeOut;Allow User Variables=True"
+		
+		if ($UseSSL) {
+			$connectionString = $connectionString + ";SslMode=Required"
+		}
+		else
+		{
+			$connectionString = $connectionString + ";SslMode=None"
+		}
 	}
 	process
 	{
